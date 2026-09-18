@@ -27,4 +27,4 @@ jobs:
           node-version: 20
 
       - name: Publicar no Firebase Hosting
-        run: npx firebase-tools@latest deploy --only hosting --project apresentacao-fish-ad --non-interactive
+        run: npx firebase-tools@15.22.1 deploy --only hosting --project apresentacao-fish-ad --non-interactive
