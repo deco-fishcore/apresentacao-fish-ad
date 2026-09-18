@@ -1,0 +1,30 @@
+# Publica o site ao vivo no Firebase Hosting sempre que a branch main recebe um push.
+# Autenticação sem chave: o GitHub se identifica no Google por federação de identidade (OIDC).
+name: Deploy para o Firebase Hosting (produção)
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Autenticar no Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/939838888818/locations/global/workloadIdentityPools/github/providers/github-oidc
+          service_account: github-action-1376082611@apresentacao-fish-ad.iam.gserviceaccount.com
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Publicar no Firebase Hosting
+        run: npx firebase-tools@latest deploy --only hosting --project apresentacao-fish-ad --non-interactive
